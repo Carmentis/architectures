@@ -48,10 +48,11 @@ services:
       - OPERATOR_DATABASE_PASSWORD=${OPERATOR_POSTGRES_PASSWORD}
       - OPERATOR_DATABASE_URL=operator-db
       - OPERATOR_DATABASE_PORT=5432
+      - OPERATOR_DB_ENCRYPTION_KEY=${OPERATOR_DB_ENCRYPTION_KEY}
       - OPERATOR_KEYPAIR_FILE=/app/config/operator-keypair.json
+      - OPERATOR_ADMIN_TOKEN_FILE=/app/config/operator-admin-token.txt
       - NODE_URL=${NODE_URL}
       - JWT_SECRET=${OPERATOR_JWT_SECRET}
-      - ENABLE_PUBLIC_ACCOUNT_CREATION=1
       - PORT=3000
     container_name: ${ENV_TAG}-operator-back
     restart: always
