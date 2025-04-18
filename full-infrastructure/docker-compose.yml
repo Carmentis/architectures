@@ -13,6 +13,23 @@ services:
     restart: always
     volumes:
     - ${DEV_NODE_STORAGE_FOLDER}:/app/blockchain
+  email-oracle:
+    container_name: ${ENV_TAG}-email-oracle
+    environment:
+    - OPERATOR_URL=${OPERATOR_URL}
+    - SMTP_HOST=${SMTP_HOST}
+    - SMTP_PORT=${SMTP_PORT}
+    - SMTP_USER=${SMTP_USER}
+    - SMTP_PASS=${SMTP_PASS}
+    - ORACLE_KEY_PAIR=/app/data/oracle-keypair.json
+    - PORT=3000
+    image: ghcr.io/carmentis/oracle/email
+    ports:
+    - 5012:3000
+    restart: always
+    tty: true
+    volumes:
+    - ${EMAIL_ORACLE_KEYPAIR_FOLDER}:/app/data
   exchange-back:
     container_name: ${ENV_TAG}-exchange-back
     environment:
@@ -25,6 +42,17 @@ services:
     restart: always
     volumes:
     - ${EXCHANGE_ISSUER_KEYPAIR_FOLDER}:/app/config
+  exchange-front:
+    container_name: ${ENV_TAG}-exchange-front
+    depends_on:
+    - exchange-back
+    environment:
+    - EXCHANGE_API=${EXCHANGE_API}
+    - PORT=3000
+    image: ghcr.io/carmentis/exchange/front:${ENV_TAG}
+    ports:
+    - 5004:3000
+    restart: always
   explorer:
     container_name: ${ENV_TAG}-explorer
     environment:
