@@ -1,0 +1,157 @@
+version: "3.3"
+
+services:
+  dev-node:
+    image: ghcr.io/carmentis/dev-node:${ENV_TAG}
+    environment:
+      - PORT=3000
+      - STORAGE_FOLDER=/app/blockchain
+    container_name: ${ENV_TAG}-dev-node
+    restart: always
+    volumes:
+      - ${DEV_NODE_STORAGE_FOLDER}:/app/blockchain
+    ports:
+      - "5000:3000"
+  operator-db:
+    image: postgres:15
+    container_name: ${ENV_TAG}-operator-postgres
+    restart: always
+    depends_on:
+      - dev-node
+    environment:
+      - POSTGRES_USER=${OPERATOR_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${OPERATOR_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${OPERATOR_POSTGRES_DB}
+    networks:
+      - carmentis-network
+    ports:
+      - "5555:5432"
+    volumes:
+      - ./operator_db:/var/lib/postgresql/data
+
+  operator-back:
+    image: ghcr.io/carmentis/operator/back:${ENV_TAG}
+    environment:
+      - OPERATOR_DATABASE_NAME=${OPERATOR_POSTGRES_DB}
+      - OPERATOR_DATABASE_USERNAME=${OPERATOR_POSTGRES_USER}
+      - OPERATOR_DATABASE_PASSWORD=${OPERATOR_POSTGRES_PASSWORD}
+      - OPERATOR_DATABASE_URL=operator-db
+      - OPERATOR_DATABASE_PORT=5432
+      - OPERATOR_DB_ENCRYPTION_KEY=${OPERATOR_DB_ENCRYPTION_KEY}
+      - OPERATOR_KEYPAIR_FILE=/app/config/operator-keypair.json
+      - OPERATOR_ADMIN_TOKEN_FILE=/app/config/operator-admin-token.txt
+      - NODE_URL=${NODE_URL}
+      - JWT_SECRET=${OPERATOR_JWT_SECRET}
+      - PORT=3000
+    container_name: ${ENV_TAG}-operator-back
+    restart: always
+    depends_on:
+      - operator-db
+    volumes:
+      - ${OPERATOR_KEYPAIR_FOLDER}:/app/config
+    networks:
+      - carmentis-network
+    ports:
+      - "5001:3000"
+
+  operator-front:
+    image: ghcr.io/carmentis/operator/front:${ENV_TAG}
+    environment:
+      - OPERATOR_URL=${OPERATOR_URL}
+      - PORT=3000
+    container_name: ${ENV_TAG}-operator-front
+    depends_on:
+      - operator-back
+    ports:
+      - "5002:3000"
+
+  exchange-back:
+    image: ghcr.io/carmentis/exchange/back:${ENV_TAG}
+    container_name: ${ENV_TAG}-exchange-back
+    restart: always
+    environment:
+      - ISSUER_KEYPAIR_FILE=/app/config/issuer-keypair.json
+      - NODE_URL=${NODE_URL}
+      - PORT=3000
+    volumes:
+      - ${EXCHANGE_ISSUER_KEYPAIR_FOLDER}:/app/config
+    ports:
+      - "5003:3000"
+  exchange-front:
+    image: ghcr.io/carmentis/exchange/front:${ENV_TAG}
+    container_name: ${ENV_TAG}-exchange-front
+    restart: always
+    environment:
+      - EXCHANGE_API=${EXCHANGE_API}
+      - PORT=3000
+    ports:
+      - "5004:3000"
+    depends_on:
+      - exchange-back
+
+
+  explorer:
+    image: ghcr.io/carmentis/explorer:${ENV_TAG}
+    container_name: ${ENV_TAG}-explorer
+    restart: always
+    environment:
+      - NODE_URL=${NODE_URL}
+      - PORT=3000
+    ports:
+      - "5005:3000"
+
+  email-oracle:
+    image: ghcr.io/carmentis/oracle/email
+    environment:
+      - OPERATOR_URL=${OPERATOR_URL}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - ORACLE_KEY_PAIR=/app/data/oracle-keypair.json
+      - PORT=3000
+    container_name: ${ENV_TAG}-email-oracle
+    restart: always
+    tty: true
+    volumes:
+      - ${EMAIL_ORACLE_KEYPAIR_FOLDER}:/app/data
+    ports:
+      - "5012:3000"
+
+  file-sign-back:
+    image: ghcr.io/carmentis/file-sign/back
+    environment:
+      - OPERATOR_URL=${OPERATOR_URL}
+      - EXPLORER_URL=${EXPLORER_URL}
+      - JWT_SECRET=${FILE_SIGN_JWT_SECRET}
+      - EMAIL_ORACLE_URL=${EMAIL_ORACLE_URL}
+      - DEFAULT_APPLICATION_ID=${FILE_SIGN_DEFAULT_APPLICATION_ID}
+      - DEFAULT_APPLICATION_VERSION=${FILE_SIGN_DEFAULT_VERSION}
+      - HOST_DOMAIN_URL=unused
+      - STORAGE=data
+      - PORT=3000
+    container_name: ${ENV_TAG}-file-sign-back
+    restart: always
+    volumes:
+      - ${FILE_SIGN_STORAGE_FOLDER}:/app/data
+    networks:
+      - carmentis-network
+    ports:
+      - "5010:3000"
+  file-sign-front:
+    image: ghcr.io/carmentis/file-sign/front
+    environment:
+      - API=${FILE_SIGN_API}
+      - PORT=3000
+    container_name: ${ENV_TAG}-file-sign-front
+    depends_on:
+      - file-sign-back
+    networks:
+      - carmentis-network
+    ports:
+      - "5011:3000"
+
+networks:
+  carmentis-network:
+    driver: bridge
+

@@ -1,0 +1,16 @@
+networks:
+  carmentis-network:
+    driver: bridge
+services:
+  dev-node:
+    container_name: ${ENV_TAG}-dev-node
+    environment:
+    - PORT=3000
+    - STORAGE_FOLDER=/app/blockchain
+    image: ghcr.io/carmentis/dev-node:${ENV_TAG}
+    ports:
+    - 5000:3000
+    restart: always
+    volumes:
+    - ${DEV_NODE_STORAGE_FOLDER}:/app/blockchain
+version: '3.3'
