@@ -15,10 +15,11 @@ In this repository, each folder represents an *architecture*, the list of embedd
 being presented below:
 
 | Folder name              | Node | Operator | Explorer | Exchange | Email Oracle | File-Sign |
-|--------------------------|------|---------|----------|----------|--------------|-----------|
-| `standard` (recommended) |  Yes | Yes     |          |          |              |           |
-| `operator`               |      | Yes     |          |          |              |           |
-| `full-infrastructure`    | Yes  | Yes     | Yes      | Yes      | Yes          | Yes       |
+|--------------------------|------|----------|----------|----------|--------------|-----------|
+| `node`                   |  Yes |          |          |          |              |           |
+| `standard` (recommended) |  Yes | Yes      |          |          |              |           |
+| `operator`               |      | Yes      |          |          |              |           |
+| `full-infrastructure`    | Yes  | Yes      | Yes      | Yes      | Yes          | Yes       |
 
 
 ## Deploy an architecture
@@ -28,14 +29,14 @@ For the sake of clarity, suppose we want to deploy a `standard` architecture.
 2. **Configure the .env** file based on the configuration and own infrastructure.
 3. **Launch the architecture** using docker-compose.
 
-We provide you the required command
+Assuming you want to deploy the full architecture and that you have filled all the environment variables in the
+`.env.example` file. Then, execute the following command:
 ```shell
-ENV=standard
-cp $ENV/docker-compose.yml && docker-compose up
+ARCH=full-architecture
+cd $ARCH && docker-compose up    # for an attached execution
+cd $ARCH && docker-compose up -d # for an detached execution
 ```
-
-To launch the architecture in a detached way, use the following `docker-compose up -d` command. To down the architecture, use
-the following `docker-compose down` command.
+To down the architecture, use `docker-compose down`.
 
 
 ## Prerequisites
