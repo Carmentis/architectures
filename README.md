@@ -30,7 +30,7 @@ For the sake of clarity, suppose we want to deploy a `standard` architecture.
 3. **Launch the architecture** using docker-compose.
 
 Assuming you want to deploy the full architecture and that you have filled all the environment variables in the
-`.env.example` file. Then, execute the following command:
+`.env` file (you can start from the `.env.example` file listing all required variables). Then, execute the following command:
 ```shell
 ARCH=full-architecture
 cd $ARCH && docker-compose up    # for an attached execution
