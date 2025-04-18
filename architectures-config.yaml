@@ -50,7 +50,8 @@ variables:
   EXPLORER_URL:
     help: "The URL of the blockchain explorer"
     value:
-      default: "http://localhost:5001"
+      default: "https://explorer.beta.carmentis.io"
+      full-infrastructure: "http://localhost:5001"
   FILE_SIGN_API:
     help: "The API URL used by the file-signature service front-end to interact with the back-end"
     value:
