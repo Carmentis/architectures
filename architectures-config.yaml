@@ -44,7 +44,7 @@ variables:
     value:
       default: "http://localhost:5012/verify/email"
   ENV_TAG:
-    help: "Used Carmentis environment (among \"beta\" and \"alpha\", default: \"beta\")"
+    help: "Used Carmentis environment (among \"beta\" and \"dev\", default: \"beta\")"
     value:
       default: "beta"
   EXPLORER_URL:
@@ -56,10 +56,8 @@ variables:
     help: "The API URL used by the file-signature service front-end to interact with the back-end"
     value:
       default: "http://localhost:5010"
-  FILE_SIGN_DEFAULT_APPLICATION_ID:
-    help: "The default application ID for the file-sign service"
-  FILE_SIGN_DEFAULT_VERSION:
-    help: "The default version for the file-sign service"
+  OPERATOR_API_KEY:
+    help: "API key used by FileSign to communicate with the Operator backend. Should be generated via the workspace."
   FILE_SIGN_JWT_SECRET:
     help: "The JWT secret used for authentication within the file-sign service"
   FILE_SIGN_STORAGE_FOLDER:
