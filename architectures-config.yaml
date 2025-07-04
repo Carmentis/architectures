@@ -39,6 +39,8 @@ variables:
     help: "The folder containing the keypair file for the issuer"
     value:
       default: "./keys"
+  STANCER_API_KEY:
+    help: "API key used to perform payments using the Stancer's API."
   EMAIL_ORACLE_URL:
     help: "The URL of the email oracle"
     value:

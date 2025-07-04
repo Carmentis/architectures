@@ -70,6 +70,8 @@ services:
     container_name: ${ENV_TAG}-exchange-back
     restart: always
     environment:
+      - STANCER_API_KEY=${STANCER_API_KEY}
+      - EXCHANGE_API=${EXCHANGE_API}
       - ISSUER_KEYPAIR_FILE=/app/config/issuer-keypair.json
       - NODE_URL=${NODE_URL}
       - PORT=3000
