@@ -74,7 +74,7 @@ services:
     - OPERATOR_API_KEY=${OPERATOR_API_KEY}
     - STORAGE=data
     - PORT=3000
-    image: ghcr.io/carmentis/file-sign/back
+    image: ghcr.io/carmentis/file-sign/back:${ENV_TAG}
     networks:
     - carmentis-network
     ports:
@@ -89,7 +89,7 @@ services:
     environment:
     - API=${FILE_SIGN_API}
     - PORT=3000
-    image: ghcr.io/carmentis/file-sign/front
+    image: ghcr.io/carmentis/file-sign/front:${ENV_TAG}
     networks:
     - carmentis-network
     ports:

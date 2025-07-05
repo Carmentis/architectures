@@ -121,7 +121,7 @@ services:
       - "5012:3000"
 
   file-sign-back:
-    image: ghcr.io/carmentis/file-sign/back
+    image: ghcr.io/carmentis/file-sign/back:${ENV_TAG}
     environment:
       - OPERATOR_URL=${OPERATOR_URL}
       - EXPLORER_URL=${EXPLORER_URL}
@@ -139,7 +139,7 @@ services:
     ports:
       - "5010:3000"
   file-sign-front:
-    image: ghcr.io/carmentis/file-sign/front
+    image: ghcr.io/carmentis/file-sign/front:${ENV_TAG}
     environment:
       - API=${FILE_SIGN_API}
       - PORT=3000
