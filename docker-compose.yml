@@ -5,7 +5,7 @@ services:
     build:
       context: abci
       dockerfile: Dockerfile
-    container_name: alpha-node-abci
+    container_name: node-abci
     ports:
       - "26658"
     volumes:
