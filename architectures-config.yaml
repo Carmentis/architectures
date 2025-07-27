@@ -1,7 +1,8 @@
 architectures:
   full-infrastructure:
     services:
-      - dev-node
+      - node-abci
+      - node-cometbft
       - operator-back
       - operator-front
       - operator-db
@@ -18,15 +19,21 @@ architectures:
       - operator-db
   standard:
     services:
-      - dev-node
+      - node-abci
+      - node-cometbft
       - operator-db
       - operator-back
       - operator-front
   node:
     services:
-      - dev-node
+      - node-abci
+      - node-cometbft
 
 variables:
+  NODE_ABCI_STORAGE:
+    help: 'The folder used to store data for the ABCI server'
+  NODE_COMETBFT_CONFIG:
+    help: 'The folder containing the configuration of the your node (used by CometBFT).'
   DEV_NODE_STORAGE_FOLDER:
     help: "The folder used to store data for the development node"
     value:

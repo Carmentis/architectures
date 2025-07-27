@@ -2,15 +2,32 @@ networks:
   carmentis-network:
     driver: bridge
 services:
-  dev-node:
-    container_name: ${ENV_TAG}-dev-node
+  node-abci:
+    build:
+      context: abci
+      dockerfile: Dockerfile
+    container_name: alpha-node-abci
     environment:
-    - PORT=3000
-    - STORAGE_FOLDER=/app/blockchain
-    image: ghcr.io/carmentis/dev-node:${ENV_TAG}
+    - PORT=26658
+    - NODE_ABCI_STORAGE=/app/data
     ports:
-    - 5000:3000
-    restart: always
+    - '26658'
     volumes:
-    - ${DEV_NODE_STORAGE_FOLDER}:/app/blockchain
+    - ${NODE_ABCI_STORAGE}:/app/data
+  node-cometbft:
+    command:
+    - start
+    - --abci
+    - grpc
+    - --proxy_app
+    - node-abci:26658
+    container_name: node-combetft
+    depends_on:
+    - node-abci
+    image: cometbft/cometbft:1_x
+    ports:
+    - 26657:26657
+    - 26658:26658
+    volumes:
+    - ${NODE_COMETBFT_CONFIG}:/app/data
 version: '3.3'
