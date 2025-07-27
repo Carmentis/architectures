@@ -15,7 +15,7 @@ services:
   node-cometbft:
     depends_on:
       - node-abci
-    image: cometbft/cometbft:1_x
+    image: cometbft/cometbft:v1.x
     container_name: node-combetft
     volumes:
       - ${NODE_COMETBFT_CONFIG}:/app/data

@@ -22,7 +22,7 @@ services:
     container_name: node-combetft
     depends_on:
     - node-abci
-    image: cometbft/cometbft:1_x
+    image: cometbft/cometbft:v1.x
     ports:
     - 26657:26657
     - 26658:26658
