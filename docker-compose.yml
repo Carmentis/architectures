@@ -2,9 +2,7 @@ version: "3.3"
 
 services:
   node-abci:
-    build:
-      context: abci
-      dockerfile: Dockerfile
+    image: ghcr.io/carmentis/node/abci:${ENV_TAG}
     container_name: node-abci
     ports:
       - "26658"
