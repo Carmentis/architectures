@@ -25,6 +25,10 @@ services:
       - grpc
       - --proxy_app
       - node-abci:26658
+      - --home
+      - /app/data
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657
     ports:
       - "26657:26657"
       - "26658:26658"
