@@ -100,8 +100,6 @@ services:
     - grpc
     - --proxy_app
     - node-abci:26658
-    - --home
-    - /app/data
     - --rpc.laddr
     - tcp://0.0.0.0:26657
     container_name: node-combetft
@@ -109,10 +107,12 @@ services:
     - node-abci
     image: cometbft/cometbft:v1.x
     ports:
+    - 26656:26656
     - 26657:26657
     - 26658:26658
+    user: root
     volumes:
-    - ${NODE_COMETBFT_CONFIG}:/app/data
+    - ${NODE_COMETBFT_CONFIG}:/cometbft
   operator-back:
     container_name: ${ENV_TAG}-operator-back
     depends_on:

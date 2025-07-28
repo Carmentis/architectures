@@ -17,19 +17,19 @@ services:
       - node-abci
     image: cometbft/cometbft:v1.x
     container_name: node-combetft
+    user: root
     volumes:
-      - ${NODE_COMETBFT_CONFIG}:/app/data
+      - ${NODE_COMETBFT_CONFIG}:/cometbft
     command:
       - start
       - --abci
       - grpc
       - --proxy_app
       - node-abci:26658
-      - --home
-      - /app/data
       - --rpc.laddr
       - tcp://0.0.0.0:26657
     ports:
+      - "26656:26656"
       - "26657:26657"
       - "26658:26658"
   dev-node:
