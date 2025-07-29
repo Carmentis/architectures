@@ -6,11 +6,10 @@ services:
     container_name: node-abci
     ports:
       - "26658"
-    volumes:
-      - ${NODE_ABCI_STORAGE}:/app/data
     environment:
       - PORT=26658
       - NODE_ABCI_STORAGE=/app/data
+      - COMET_NODE_HOST=http://node-cometbft:25567
 
   node-cometbft:
     depends_on:
