@@ -1,8 +1,6 @@
 architectures:
-  full-infrastructure:
+  demo:
     services:
-      - node-abci
-      - node-cometbft
       - operator-back
       - operator-front
       - operator-db
@@ -17,19 +15,17 @@ architectures:
       - operator-back
       - operator-front
       - operator-db
-  standard:
-    services:
-      - node-abci
-      - node-cometbft
-      - operator-db
-      - operator-back
-      - operator-front
   node:
     services:
       - node-abci
       - node-cometbft
 
+
 variables:
+  UID:
+    help: 'User identifier (needed to launch dockers as non-root user).'
+  GID:
+    help: 'Group identifier (needed to launch dockers as non-root user).'
   NODE_ABCI_STORAGE:
     help: 'The folder used to store data for the ABCI server'
   NODE_COMETBFT_CONFIG:

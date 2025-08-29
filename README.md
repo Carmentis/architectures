@@ -17,26 +17,26 @@ being presented below:
 | Folder name              | Node | Operator | Explorer | Exchange | Email Oracle | File-Sign |
 |--------------------------|------|----------|----------|----------|--------------|-----------|
 | `node`                   |  Yes |          |          |          |              |           |
-| `standard` (recommended) |  Yes | Yes      |          |          |              |           |
 | `operator`               |      | Yes      |          |          |              |           |
-| `full-infrastructure`    | Yes  | Yes      | Yes      | Yes      | Yes          | Yes       |
 
 
 ## Deploy an architecture
 
 1. **Download the repository** and **select the architecture** you want based on your need. 
-For the sake of clarity, suppose we want to deploy a `standard` architecture.
+For the sake of clarity, suppose we want to deploy the `operator` architecture.
 2. **Configure the .env** file based on the configuration and own infrastructure.
 3. **Launch the architecture** using docker-compose.
 
 Assuming you want to deploy the full architecture and that you have filled all the environment variables in the
 `.env` file (you can start from the `.env.example` file listing all required variables). Then, execute the following command:
 ```shell
-ARCH=full-architecture
+ARCH=operator
 cd $ARCH && docker-compose up    # for an attached execution
 cd $ARCH && docker-compose up -d # for an detached execution
 ```
 To down the architecture, use `docker-compose down`.
+
+> **Warning**: The `node` requires an additional configuration file to be properly launched! Please, refer
 
 
 ## Prerequisites

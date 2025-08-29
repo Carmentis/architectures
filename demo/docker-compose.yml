@@ -83,35 +83,6 @@ services:
     - carmentis-network
     ports:
     - 5011:3000
-  node-abci:
-    container_name: node-abci
-    environment:
-    - PORT=26658
-    - NODE_ABCI_STORAGE=/app/data
-    - COMET_NODE_HOST=http://node-cometbft:25567
-    image: ghcr.io/carmentis/node/abci:${ENV_TAG}
-    ports:
-    - '26658'
-  node-cometbft:
-    command:
-    - start
-    - --abci
-    - grpc
-    - --proxy_app
-    - node-abci:26658
-    - --rpc.laddr
-    - tcp://0.0.0.0:26657
-    container_name: node-combetft
-    depends_on:
-    - node-abci
-    image: cometbft/cometbft:v1.x
-    ports:
-    - 26656:26656
-    - 26657:26657
-    - 26658:26658
-    user: root
-    volumes:
-    - ${NODE_COMETBFT_CONFIG}:/cometbft
   operator-back:
     container_name: ${ENV_TAG}-operator-back
     depends_on:
