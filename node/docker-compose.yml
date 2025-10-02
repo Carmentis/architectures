@@ -1,34 +1,62 @@
+version: '3.9'
+
 networks:
   carmentis-network:
     driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
+
 services:
-  node-abci:
-    container_name: ${ENV_TAG}-node-abci
-    image: ghcr.io/carmentis/node/abci:${ENV_TAG}
+  caddy:
+    image: caddy:2
+    container_name: carmentis-caddy
+    restart: unless-stopped
     ports:
-    - '26658'
-    - 26659:26659
+      - "80:80"        # HTTP
+      - "443:443"      # HTTPS
     volumes:
-    - ${NODE_COMETBFT_CONFIG}:/cometbft
-    - ./config.toml:/app/config.toml
-  node-cometbft:
-    command:
-    - start
-    - --abci
-    - grpc
-    - --proxy_app
-    - node-abci:26658
-    - --rpc.laddr
-    - tcp://0.0.0.0:26657
-    container_name: ${ENV_TAG}-node-combetft
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - carmentis-network
     depends_on:
-    - node-abci
-    image: cometbft/cometbft:v1.x
-    ports:
-    - 26656:26656
-    - 26657:26657
-    - 26658:26658
-    user: ${UID}:${GID}
+      - node-cometbft
+      - node-abci
+
+  node-abci:
+    container_name: carmentis-node-abci
+    image: ghcr.io/carmentis/node/abci:testnet
+    expose:
+      - "26658"
     volumes:
-    - ${NODE_COMETBFT_CONFIG}:/cometbft
-version: '3.3'
+      - ./cometbft:/cometbft
+      - ./abci:/abci
+      - ./config.toml:/app/config.toml
+    networks:
+      - carmentis-network
+
+  node-cometbft:
+    container_name: carmentis-node-cometbft
+    image: cometbft/cometbft:v1.x
+    command:
+      - start
+      - --abci
+      - grpc
+      - --proxy_app
+      - node-abci:26658
+      - --rpc.laddr
+      - tcp://0.0.0.0:26657
+    depends_on:
+      - node-abci
+    ports:
+      - 26656:26656
+      - 26657:26657
+    user: "1000"
+    volumes:
+      - ./cometbft:/cometbft
+    networks:
+      - carmentis-network
+
