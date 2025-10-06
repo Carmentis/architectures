@@ -1,0 +1,7 @@
+<operator-api-domain-name> {
+    reverse_proxy operator-back:3000
+}
+
+<operator-front-domain-name> {
+    reverse_proxy operator-front:3000
+}
