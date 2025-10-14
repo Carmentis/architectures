@@ -1,4 +1,4 @@
-<your-domain-name> {
+node.your-domain-name {
     reverse_proxy node-cometbft:26657
 }
 
