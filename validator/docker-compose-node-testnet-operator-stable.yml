@@ -33,7 +33,7 @@ services:
     volumes:
       - ./cometbft:/cometbft
       - ./abci:/abci
-      - ./config.toml:/app/config.toml
+      - ./abci-config.toml:/app/config.toml
     networks:
       - carmentis-network
 
@@ -80,7 +80,7 @@ services:
       - carmentis-network
     restart: always
     volumes:
-      - ./config.toml:/app/config.toml
+      - ./operator-config.toml:/app/config.toml
       - ./operator-storage:/operator
 
   operator-front:
