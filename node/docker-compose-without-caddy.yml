@@ -8,13 +8,15 @@ networks:
 services:
   node-abci:
     container_name: carmentis-node-abci
-    image: ghcr.io/carmentis/node/abci:testnet
+    image: ghcr.io/carmentis/node/abci:latest
     expose:
       - "26658"
     volumes:
       - ./cometbft:/cometbft
       - ./abci:/abci
       - ./config.toml:/app/config.toml
+      - ./genesisRunoffs.json:/app/genesisRunoffs.json
+
     networks:
       - carmentis-network
 

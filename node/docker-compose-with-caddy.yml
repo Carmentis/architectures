@@ -28,19 +28,23 @@ services:
 
   node-abci:
     container_name: carmentis-node-abci
-    image: ghcr.io/carmentis/node/abci:testnet
+    image: ghcr.io/carmentis/node/abci:1.1.0
     expose:
       - "26658"
     volumes:
       - ./cometbft:/cometbft
       - ./abci:/abci
       - ./config.toml:/app/config.toml
+      # The genesis runoffs file is only used by the genesis node.
+      # Uncomment the line below if you intend to run the genesis node to create a network.
+      # Note: This file is optional.
+      # - ./genesisRunoffs.json:/app/genesisRunoffs.json
     networks:
       - carmentis-network
 
   node-cometbft:
     container_name: carmentis-node-cometbft
-    image: cometbft/cometbft:v1.x
+    image: cometbft/cometbft:v0.38.x
     command:
       - start
       - --abci
