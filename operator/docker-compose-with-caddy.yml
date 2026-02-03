@@ -34,7 +34,7 @@ services:
     depends_on:
       - operator-db
     container_name: carmentis-operator-back
-    image: ghcr.io/carmentis/operator/back:1.2.0
+    image: ghcr.io/carmentis/operator/back:stable
     networks:
       - carmentis-network
     restart: always
@@ -49,7 +49,7 @@ services:
     environment:
       - OPERATOR_URL=${OPERATOR_URL}
       - PORT=3000
-    image: ghcr.io/carmentis/operator/front:1.2.0
+    image: ghcr.io/carmentis/operator/front:stable
     networks:
       - carmentis-network
     restart: always
