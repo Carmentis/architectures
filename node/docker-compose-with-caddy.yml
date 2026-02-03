@@ -11,7 +11,7 @@ volumes:
 services:
   caddy:
     image: caddy:2
-    container_name: carmentis-caddy
+    container_name: caddy
     restart: unless-stopped
     ports:
       - "80:80"        # HTTP
@@ -27,8 +27,8 @@ services:
       - node-abci
 
   node-abci:
-    container_name: carmentis-node-abci
-    image: ghcr.io/carmentis/node/abci:1.1.0
+    container_name: node-abci
+    image: ghcr.io/carmentis/node/abci:stable
     expose:
       - "26658"
     volumes:
@@ -43,7 +43,7 @@ services:
       - carmentis-network
 
   node-cometbft:
-    container_name: carmentis-node-cometbft
+    container_name: node-cometbft
     image: cometbft/cometbft:v0.38.x
     command:
       - start
