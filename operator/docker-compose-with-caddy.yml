@@ -24,7 +24,7 @@ services:
       - carmentis-network
     restart: always
     volumes:
-      - ./operator:/operator
+      - ./operator:/app/operator
 
 
 volumes:
