@@ -1,7 +1,4 @@
 operator.your-domain-name {
-    reverse_proxy operator-back:3000
+    reverse_proxy operator:3000
 }
 
-workspace.your-domain-name {
-    reverse_proxy operator-front:3000
-}

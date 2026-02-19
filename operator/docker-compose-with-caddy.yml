@@ -1,4 +1,3 @@
-version: '3.3'
 
 networks:
   carmentis-network:
@@ -18,41 +17,15 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
-  operator-db:
-    container_name: carmentis-operator-db
-    image: postgres:15
-    networks:
-      - carmentis-network
-    volumes:
-      - ./operator-storage/postgres:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
-  operator-back:
-    depends_on:
-      - operator-db
-    container_name: carmentis-operator-back
-    image: ghcr.io/carmentis/operator/back:stable
+  operator:
+    container_name: carmentis-operator
+    image: ghcr.io/carmentis/operator
     networks:
       - carmentis-network
     restart: always
     volumes:
-      - ./config.toml:/app/config.toml
-      - ./operator-storage:/operator
+      - ./operator:/operator
 
-  operator-front:
-    container_name: carmentis-operator-front
-    depends_on:
-      - operator-back
-    environment:
-      - OPERATOR_URL=${OPERATOR_URL}
-      - PORT=3000
-    image: ghcr.io/carmentis/operator/front:stable
-    networks:
-      - carmentis-network
-    restart: always
 
 volumes:
   caddy_data:
