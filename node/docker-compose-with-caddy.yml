@@ -28,7 +28,7 @@ services:
 
   node-abci:
     container_name: node-abci
-    image: ghcr.io/carmentis/node/abci:stable
+    image: ghcr.io/carmentis/node/abci:TAG
     expose:
       - "26658"
     volumes:
